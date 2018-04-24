@@ -22,7 +22,7 @@ public class peerProcess {
 		List<AdjacentPeers> peerIds=peerParser.getneighborinfo();
 	    
 		Process process =new Process (peerId,peerIds);
-
+		process.createPeerDirs(peerId);
 		
 	}
 }

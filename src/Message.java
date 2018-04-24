@@ -92,7 +92,7 @@ public class Message {
 	public static byte[] getMessage(int length, MESS type, byte[] data) {
 		byte[] dataLength = ByteBuffer.allocate(4).putInt(length).array();
 		byte[] messageType = ByteBuffer.allocate(1).put(type.messageValue).array();
-		ByteBuffer bf = ByteBuffer.allocate(data.length + 5);
+		ByteBuffer bf = ByteBuffer.allocate(length + 5);
 		bf.put(dataLength);
 		bf.put(messageType);
 		bf.put(data);
@@ -100,9 +100,8 @@ public class Message {
 	}
 
 	public static byte[] getMessage(byte[] data, MESS type) {
-		int dataLength = ByteBuffer.wrap(data).getInt();
-		byte[] messageLength = ByteBuffer.allocate(4).putInt(dataLength + 1).array();
-		ByteBuffer bf = ByteBuffer.allocate(data.length + 5);
+		byte[] messageLength = ByteBuffer.allocate(4).putInt(5).array();
+		ByteBuffer bf = ByteBuffer.allocate(9);
 		byte[] messageType = ByteBuffer.allocate(1).put(type.messageValue).array();
 		bf.put(messageLength);
 		bf.put(messageType);
@@ -186,15 +185,18 @@ public class Message {
 
 		tempField = tempField.setBit(handler.remotePeers.get(index).piece_num);
 
-		handler.fh.bitfield = tempField.toByteArray();
-
-		// handler.recieved_data[msg_index] += handler.size_of_piece;
+	/*	handler.fh.bitfield = tempField.toByteArray();
+		if(handler.receivedData.get(index)==null){
+		 handler.receivedData.set(index,0);
+		}
+		int sum=handler.receivedData.get(index)+ handler.fh.pieceSize;
+		handler.receivedData.set(0, sum);*/
 		// handler.writelogs.pieceDownloaded(handler.other_peer_Ids[handler.my_clID],
 		// handler.peer_neighbours[msg_index].peerId,
 		// handler.peer_neighbours[msg_index].piece_num, ++handler.tot_pieces);
 
 		boolean haveFile = true;
-		for (int i = 0; i < handler.number_of_bits; i++) {
+		for (int i = 0; i < handler.fh.number_of_bits; i++) {
 			if (!tempField.testBit(i)) {
 				haveFile = false;
 				break;
@@ -358,7 +360,7 @@ public class Message {
 		pd.remotePeers.get(index).bit_field_map = tempField.toByteArray();
 
 		boolean neighborHasFile = true;
-		for (int i = 0; i < pd.number_of_bits; i++) {
+		for (int i = 0; i < pd.fh.number_of_bits; i++) {
 			if (!tempField.testBit(i)) {
 				neighborHasFile = false;
 				break;
@@ -384,5 +386,6 @@ public class Message {
 		if (!myField.testBit(this_indx))
 			Message.sendInterested(index, pd);
 	}
+	
 
 }

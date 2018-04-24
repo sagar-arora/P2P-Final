@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 public class FileHandler {
 
@@ -72,7 +74,34 @@ public class FileHandler {
 	            System.exit(0);
 	        }
     	}
-}
+    }
+    
+    public void combinePiecesOfFile() {
+
+        try {
+            FileOutputStream os = new FileOutputStream("peer_" + peerId + "//" + file_name);
+
+            for (int i = 0; i < number_of_bits; i++) {
+                if (i+1 == number_of_bits)
+                    os.write(adjustpadding(file_pieces[i]));
+                else
+                    os.write(file_pieces[i]);
+            }
+
+            os.close();
+        } catch (Exception e) {
+            //Error assembling file pieces
+            System.exit(0);
+        }
+
+    }
+    
+    public static byte[] adjustpadding(byte[] data) {
+        int i = data.length-1;
+        while (i >= 0 && data[i] == 0)
+            i=i-1;
+        return Arrays.copyOf(data, i + 1);
+    }
 
 
 }

@@ -18,7 +18,7 @@ public class MessageHandler {
 		        if(Message.checkHandshake(msg_incom, peerId))
 		        	continue;
 		        
-		        int index=Message.findIndex(handler, peerId,msg_incom);
+		        int index=Message.findIndex(handler, peerId, msg_incom);
 		        	if (index != -1) {
 		        	if ((msg_incom.type != MESS.BITFIELD) && 
 		            		handler.remotePeers.get(index).has_rcvd_bit_field == false &&

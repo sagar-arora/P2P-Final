@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
@@ -45,6 +46,8 @@ public class Process {
 	
 	        MessageHandler.messageHandling(handler);
 		}
+		handler.fh.combinePiecesOfFile();
+        System.exit(0);
 		
 	}
 
@@ -60,11 +63,9 @@ public class Process {
 			    adjacentPeer.piece_num = rqst_piece_num;	
 			    if (rqst_piece_num != -1) {
 			        Message.sendRequestMessage(handler, rqst_piece_num,Message.find(handler,adjacentPeer.peerId));
-			        System.out.println("handshake message sent from host"+adjacentPeer.host_name+"on"+adjacentPeer.peerId);
+			        System.out.println("handshake message sent from host"+adjacentPeer.host_name+"on"+adjacentPeer.peerId+"requested piece"+rqst_piece_num);
 			    }
 			}
-		
-		
 	}
 
 	private void conditionalSendBitField(AdjacentPeers adjacentPeer) {
@@ -176,6 +177,15 @@ public class Process {
 	                }
 	            }
 	    }
+	 public static void createPeerDirs(int peerId) {
+			String workingDir = System.getProperty("user.dir");
+			File file = new File (workingDir + "//" + "peer_" + peerId);
+			if (!file.isDirectory()) {
+				file.mkdir();
+			}
+		}
+	 
+	 
 
 	
 }

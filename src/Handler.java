@@ -52,7 +52,7 @@ public class Handler {
 		pref_neighbours_scheduler=new Timer();
 		clientIdtoPeerId=new HashMap<>();
 		opt_neighbour_scheduler=new Timer();
-		
+		receivedData=new ArrayList<>();
 		}
 
 
